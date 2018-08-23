@@ -8,6 +8,8 @@ import java.util.*;
 
 import javax.swing.*;
 
+// TODO http://level1.jointheleague.org/Mod3Recipes/WhackAMole.html
+
 public class WhackAMole implements ActionListener {
 
 	public JFrame frame = new JFrame();
