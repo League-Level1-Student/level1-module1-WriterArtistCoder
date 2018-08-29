@@ -23,16 +23,16 @@ public class PigLatinTranslator {
 		
 		frame.add(panel);
 		
-		JTextField en = new JTextField(10);
 		JButton go = new JButton();
+		JLabel platin = new JLabel();
+		JTextField en = new JTextField(10);
 		
 		try {
-			ImageIcon i = new ImageIcon(ImageIO.read(new PigLatinTranslator().getClass().getResourceAsStream("translate.svg")));
+			Icon i = (Icon) new ImageIcon(ImageIO.read(new PigLatinTranslator().getClass().getResourceAsStream("translate.png")));
+			go.setIcon(i);
 		} catch (Exception e1) {
-			System.out.println(e1.toString());
+			
 		}
-		
-		JLabel platin = new JLabel();
 		
 		go.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -8,26 +8,20 @@ import java.util.*;
 
 import javax.swing.*;
 
-// TODO http://level1.jointheleague.org/Mod3Recipes/WhackAMole.html
-
 public class WhackAMole implements ActionListener {
 
 	public JFrame frame = new JFrame();
 	public JPanel panel = new JPanel();
+	public Date timeAtStart;
+	public int whackTimesCorrect = 0;
+	public int whackTimesWrong = 0;
 
 	public static void main(String[] args) {
 		WhackAMole instance = new WhackAMole();
 		instance.setupGUI();
-
-		int i = 0;
-		while (true) {
-			if (i > 100) {
-				instance.panel.removeAll();
-				instance.drawButtons();
-				i = 0;
-			}
-			i++;
-		}
+		instance.drawButtons();
+		
+		instance.timeAtStart = new Date();
 	}
 
 	public void setupGUI() {
@@ -66,6 +60,20 @@ public class WhackAMole implements ActionListener {
 			panel.add(b);
 		}
 	}
+	
+	private void endGameWin() {
+	     Date timeAtEnd = new Date();
+	     JOptionPane.showMessageDialog(null, "Your whack rate is "
+	          + ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / whackTimesCorrect)
+	          + " moles per second.");
+	}
+	
+	private void endGameLose() {
+	     Date timeAtEnd = new Date();
+	     JOptionPane.showMessageDialog(null, "Your whack rate is "
+	          + ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / whackTimesCorrect)
+	          + " moles per second.");
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -73,14 +81,36 @@ public class WhackAMole implements ActionListener {
 
 		if (button.getText().equals("MOLE!")) {
 			playSound("pong copy.wav");
-			try {
-				Thread.sleep(1000);
-			} catch (Exception x) {
-
-			}
+			whackTimesCorrect++;
 		} else {
 			String[] missed = { "You can't catch me", "I'm over there", "Missed me" };
 			speak(missed[new Random().nextInt(missed.length)]);
+			whackTimesWrong++;
+		}
+		
+		frame.dispose();
+		frame = new JFrame();
+		panel.removeAll();
+		setupGUI();
+		
+		if (whackTimesCorrect >= 10) {
+			JLabel label = new JLabel("You won! *applause and cheering* *rose hits your shirt*");
+			panel.add(label);
+			
+			endGameWin();
+		} else if (whackTimesWrong >= 5) {
+			JLabel label = new JLabel("You lost! *booing* *tomato hits your shirt*");
+			panel.add(label);
+			
+			endGameLose();
+		} else {
+			drawButtons();
+		}
+
+		try {
+			Thread.sleep(1000);
+		} catch (Exception x) {
+
 		}
 	}
 }
